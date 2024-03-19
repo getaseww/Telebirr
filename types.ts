@@ -1,6 +1,4 @@
 export type EncryptionPayloadType={
-        appId: string,
-        shortCode: string,
         nonce: string,
         outTradeNo: string,
         returnUrl: string,
@@ -14,9 +12,6 @@ export type EncryptionPayloadType={
 
 
 export type SignaturePayloadType={
-    appId: string,
-    appKey: string,
-    shortCode: string,
     nonce: string,
     outTradeNo: string,
     returnUrl: string,
