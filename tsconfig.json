@@ -1,13 +1,13 @@
 {
   "compilerOptions": {
     "target": "es6",
-    "module": "es6",
+    "module": "CommonJS",
     "outDir": "dist",
-    "rootDir": "/", 
+    "rootDir": "./src", 
     "sourceMap": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true
   },
-  "include": ["/**/*.ts"],
+  "include": ["src/**/*.ts"],
   "exclude": ["node_modules"],
 }

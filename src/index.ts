@@ -1,4 +1,4 @@
-import { publicEncrypt, createHash } from 'node:crypto';
+import { publicEncrypt, createHash } from 'crypto';
 import { headers } from './helpers';
 import { EncryptionPayloadType } from './types';
 

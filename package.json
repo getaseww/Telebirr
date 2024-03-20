@@ -1,14 +1,29 @@
 {
-  "type": "module",
+  "tyoe": "module",
   "name": "telebirr-api",
-  "version": "1.0.3",
+  "version": "1.0.5",
   "description": "",
-  "main": "index.js",
+  "exports": "./src/index.ts",
+  "engines": {
+    "node": ">=18.18.0 <19.0.0"
+  },
   "scripts": {
+    "build": "npm install && tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
-  "author": "",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/getaseww/Telebirr.git"
+  },
+  "keywords": [
+    "telebirr",
+    "telebirr-api",
+    "mobile_wallet"
+  ],
+  "bugs": {
+    "url": "https://github.com/getaseww/Telebirr/issues"
+  },
+  "author": "Getasew Walelign",
   "license": "ISC",
   "devDependencies": {
     "@types/node": "^20.11.26",
