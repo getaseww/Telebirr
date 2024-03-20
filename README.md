@@ -63,7 +63,7 @@ const signature = telebirr.signData({
 Initiate a web payment transaction:
 
 ```javascript
-telebirr.initWebPayment(url, signature, ussd)
+telebirr.initWebPayment(url, sign, ussd)
   .then(response => {
     console.log("Response from Telebirr:", response);
     // Handle successful response here
@@ -73,6 +73,8 @@ telebirr.initWebPayment(url, signature, ussd)
     // Handle error here
   });
 ```
+
+Use encryptedData as a value of ussd and signature as a value of sign whe you initiate payment
 
 #### Example Response
 
