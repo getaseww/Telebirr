@@ -80,6 +80,7 @@ telebirr.initWebPayment(url, sign, ussd)
 
 Upon successful request, the API returns a response like this:
 
+code 0 always indicates success
 ```json
 {
   "code": 0,
