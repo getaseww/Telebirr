@@ -62,7 +62,7 @@ const signature = telebirr.signData({
 
 Initiate a web payment transaction:
 
-Use encryptedData as a value of ussd and signature as a value of sign whe you initiate payment.
+Use signature as a value of sign and encryptedData as a value of ussd when you initiate payment.
 
 ```javascript
 telebirr.initWebPayment(url, sign, ussd)
