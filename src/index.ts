@@ -1,7 +1,6 @@
-import { publicEncrypt, createHash } from 'crypto';
+import { publicEncrypt, createHash, constants } from 'node:crypto';
 import { headers } from './helpers';
-import { EncryptionPayloadType } from './types';
-
+import { EncryptionPayloadType } from './types/index';
 
 export class Telebirr {
     private appId: string;
@@ -10,27 +9,41 @@ export class Telebirr {
     private publicKey: string;
 
     constructor(appId: string, appKey: string, shortCode: string, publicKey: string) {
-        this.appId = appId
-        this.appKey = appKey
-        this.shortCode = shortCode
-        this.publicKey = publicKey
+        this.appId = appId;
+        this.appKey = appKey;
+        this.shortCode = shortCode;
+        this.publicKey = publicKey;
     }
 
+    async encrypt(payload: EncryptionPayloadType): Promise<string> {
+        try {
+            const publicKey = `-----BEGIN PUBLIC KEY-----\n${this.publicKey}\n-----END PUBLIC KEY-----`;
+            const dataToEncrypt = JSON.stringify({ ...payload, appId: this.appId, shortCode: this.shortCode });
+            const maxSize = 234; //it was 245 but we decree the pading byts from it
+            const bufferSize = dataToEncrypt.length;
+            const encryptedChunks = [];
+            let offset = 0;
 
-    encrypt(payload: EncryptionPayloadType): string {
-        // public key which is provided from Telebirr
-        const publicKey = `-----BEGIN PUBLIC KEY-----\n${this.publicKey}\n-----END PUBLIC KEY-----`;
-        const dataToEncrypt = Buffer.from(JSON.stringify({ ...payload, appId: this.appId, appKey: this.appKey, shortCode: this.shortCode }));
+            while (offset < bufferSize) {
+                const chunkSize = Math.min(maxSize, bufferSize - offset);
+                const chunk = dataToEncrypt.slice(offset, offset + chunkSize);
 
-        // Encrypting data using RSA Algorithm
-        const encryptedData = publicEncrypt(
-            {
-                key: publicKey,
-            },
-            dataToEncrypt,
-        );
+                const encryptedChunk = publicEncrypt({
+                    key: publicKey,
+                    padding: constants.RSA_PKCS1_PADDING
+                }, Buffer.from(chunk, 'utf8'));
 
-        return encryptedData.toString('base64');
+                encryptedChunks.push(encryptedChunk);
+                offset += chunkSize;
+            }
+
+            const encryptedData = Buffer.concat(encryptedChunks);
+            const encrypted = encryptedData.toString('base64');
+
+            return encrypted;
+        } catch (error) {
+            throw new Error('Encryption failed');
+        }
     }
 
     signData(params: EncryptionPayloadType): string {
@@ -40,29 +53,27 @@ export class Telebirr {
             .map(([key, value]) => `${key}=${value}`) // Map to key-value pairs
             .join('&'); // Join with '&'
 
-        return createHash('sha256').update(encodedParams).digest('hex')
+        return createHash('sha256').update(encodedParams).digest('hex');
     }
 
-    initWebPayment(url: string, sign: string, ussd: string): any {
-        const body = { appid: this.appId, sign, ussd }
-        fetch(url, {
-            method: 'POST',
-            headers: headers,
-            body: JSON.stringify(body)
-        })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(data => {
-                console.log("response from telebirr", data);
-                return (data);
-            })
-            .catch(error => {
-                console.error("telebirr error", error);
-                return error;
+    async initWebPayment(url: string, sign: string, ussd: string): Promise<any> {
+        const body = { appid: this.appId, sign, ussd };
+        try {
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: headers,
+                body: JSON.stringify(body)
             });
+            console.log("network error",response)
+
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            const data = await response.json();
+            console.log("response from telebirr", data);
+            return data;
+        } catch (error:any) {
+            throw new Error(error);
+        }
     }
 }

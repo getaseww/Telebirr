@@ -62,6 +62,8 @@ const signature = telebirr.signData({
 
 Initiate a web payment transaction:
 
+Use encryptedData as a value of ussd and signature as a value of sign whe you initiate payment.
+
 ```javascript
 telebirr.initWebPayment(url, sign, ussd)
   .then(response => {
@@ -73,8 +75,6 @@ telebirr.initWebPayment(url, sign, ussd)
     // Handle error here
   });
 ```
-
-Use encryptedData as a value of ussd and signature as a value of sign whe you initiate payment
 
 #### Example Response
 
@@ -90,9 +90,9 @@ Upon successful request, the API returns a response like this:
 }
 ```
 
-## API Documentation
+<!-- ## API Documentation
 
-For detailed API documentation, please refer to the [Telebirr Mobile Wallet API documentation](https://telebirr.et/developer).
+For detailed API documentation, please refer to the [Telebirr Mobile Wallet API documentation](https://telebirr.et/developer). -->
 
 ## License
 
