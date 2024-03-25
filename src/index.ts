@@ -64,16 +64,15 @@ export class Telebirr {
                 headers: headers,
                 body: JSON.stringify(body)
             });
-            console.log("network error",response)
+            const data = await response.json();
 
             if (!response.ok) {
-                throw new Error('Network response was not ok');
+                throw data;
             }
-            const data = await response.json();
-            console.log("response from telebirr", data);
+            // console.log("response from telebirr", data);
             return data;
-        } catch (error:any) {
-            throw new Error(error);
+        } catch (error: any) {
+            throw error;
         }
     }
 }
