@@ -7,7 +7,7 @@ This npm package facilitates seamless integration with the Telebirr Mobile Walle
 You can install the package via npm:
 
 ```bash
-npm install telebirr-api
+npm install telebirr-sdk
 ```
 
 ## Usage
@@ -17,7 +17,7 @@ npm install telebirr-api
 First, initialize the Telebirr payment API with your API credentials:
 
 ```javascript
-import { Telebirr } from 'telebirr-api';
+import { Telebirr } from 'telebirr-sdk';
 
 const telebirr = new Telebirr(appId, appKey, shortCode, publicKey);
 ```
